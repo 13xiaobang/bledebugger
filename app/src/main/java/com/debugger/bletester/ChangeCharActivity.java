@@ -670,12 +670,18 @@ public class ChangeCharActivity extends Activity implements OnClickListener {
 			if (!startNotify) {
 				bleService.mBluetoothGatt.setCharacteristicNotification(
 						gattChar, true);
+				BluetoothGattDescriptor des = gattChar.getDescriptors().get(0);
+				des.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+				bleService.mBluetoothGatt.writeDescriptor(des);
 				startNotify = true;
 				notifyButton.setText("停止通知");
 			} else {
 				bleService.mBluetoothGatt.setCharacteristicNotification(
 						gattChar, false);
 				startNotify = false;
+				BluetoothGattDescriptor des = gattChar.getDescriptors().get(0);
+				des.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+				bleService.mBluetoothGatt.writeDescriptor(des);
 				notifyButton.setText("开始通知");
 			}
 			break;
